@@ -47,7 +47,13 @@ services:
       - mautic-db:mysql
     ports:
       - 8003:80
-    volumes: *mautic-volumes   
+    volumes: 
+      - mautic-logs:/var/www/html/var/logs
+      - mautic-config:/var/www/html/config
+      - mautic-media-files:/var/www/html/docroot/media/files
+      - mautic-media-images:/var/www/html/docroot/media/images
+      - mautic-cron:/opt/mautic/cron
+      
 
     environment:
       - DOCKER_MAUTIC_LOAD_TEST_DATA=${DOCKER_MAUTIC_LOAD_TEST_DATA}
@@ -76,7 +82,12 @@ services:
         MAUTIC_VERSION: "${MAUTIC_VERSION}"  # Corrigido o uso de args
     links:
       - mautic-db:mysql
-    volumes: *mautic-volumes
+    volumes:
+      - mautic-logs:/var/www/html/var/logs
+      - mautic-config:/var/www/html/config
+      - mautic-media-files:/var/www/html/docroot/media/files
+      - mautic-media-images:/var/www/html/docroot/media/images
+      - mautic-cron:/opt/mautic/cron
         
     environment:
       - DOCKER_MAUTIC_ROLE=mautic_cron
@@ -102,7 +113,12 @@ services:
         MAUTIC_VERSION: "${MAUTIC_VERSION}"  # Corrigido o uso de args
     links:
       - mautic-db:mysql
-    volumes: *mautic-volumes
+    volumes: 
+      - mautic-logs:/var/www/html/var/logs
+      - mautic-config:/var/www/html/config
+      - mautic-media-files:/var/www/html/docroot/media/files
+      - mautic-media-images:/var/www/html/docroot/media/images
+      - mautic-cron:/opt/mautic/cron
    
     environment:
       - DOCKER_MAUTIC_ROLE=mautic_worker
@@ -117,6 +133,11 @@ services:
 volumes:
   mysql-data:
   rabbitmq-data:
+  mautic-logs:
+  mautic-config:
+  mautic-media-files:
+  mautic-media-images:
+  mautic-cron:
 
 networks:
   default:
