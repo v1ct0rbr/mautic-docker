@@ -48,10 +48,14 @@ RUN docker-php-ext-configure gd --with-freetype --with-jpeg \
     && docker-php-ext-install intl mbstring mysqli curl pdo_mysql zip bcmath sockets exif amqp gd imap opcache \
     && docker-php-ext-enable intl mbstring mysqli curl pdo_mysql zip bcmath sockets exif amqp gd imap opcache
 
+
+
 # Install composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/bin --filename=composer
 
 RUN echo "memory_limit = -1" > /usr/local/etc/php/php.ini
+
+
 
 # Define Mautic version by package tag
 ARG MAUTIC_VERSION=5.x-dev
@@ -107,6 +111,13 @@ ENV DOCKER_MAUTIC_WORKERS_CONSUME_EMAIL=2 \
     DOCKER_MAUTIC_WORKERS_CONSUME_FAILED=2
 
 COPY ./common/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
+
+COPY ./translations/pt_BR.zip /var/www/html/docroot/translations/pt_BR.zip
+
+RUN unzip /var/www/html/docroot/translations/pt_BR.zip -d /var/www/html/docroot/translations/ && \
+    rm /var/www/html/docroot/translations/pt_BR.zip
+
+    
 
 # Define Mautic volumes to persist data
 VOLUME /var/www/html/config
